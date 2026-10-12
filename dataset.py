@@ -23,6 +23,13 @@ POSITIVE_WORDS = [
     "chill",
     "relaxed",
     "amazing",
+    # --- Part 3 fix: coverage gaps found in evaluation ---
+    "hopeful",
+    "proud",
+    "fire",
+    "smiling",
+    "🔥",
+    "🥹",
 ]
 
 NEGATIVE_WORDS = [
@@ -36,6 +43,10 @@ NEGATIVE_WORDS = [
     "stressed",
     "hate",
     "boring",
+    # --- Part 3 fix: coverage gaps found in evaluation ---
+    "nervous",
+    "ugh",
+    "😩",
 ]
 
 # ---------------------------------------------------------------------
@@ -50,6 +61,22 @@ SAMPLE_POSTS = [
     "This is fine",
     "So excited for the weekend",
     "I am not happy about this",
+    # --- My additions ---
+    "Lowkey stressed but kind of proud of myself",
+    "No cap, that concert was fire 🔥",
+    "I absolutely love getting stuck in traffic",
+    "ugh monday again 😩",
+    "Got the job!!! can't stop smiling 🥹",
+    "Excited for the trip but nervous about flying",
+    "Going to the store later",
+    "That movie was sick",
+    "I'm fine 🙂",
+    # --- Part 4 additions ---
+    "What a great day, nothing could bring me down",
+    "This homework is so boring, I can't focus",
+    "Honestly not bad at all",
+    "Waiting in line for an hour, love that for me 🙄",
+    "Kinda sad it's over but so grateful for the memories",
 ]
 
 # Human labels for each post above.
@@ -65,30 +92,26 @@ TRUE_LABELS = [
     "neutral",   # "This is fine"
     "positive",  # "So excited for the weekend"
     "negative",  # "I am not happy about this"
+    # --- My additions ---
+    "mixed",     # "Lowkey stressed but kind of proud of myself"
+    "positive",  # "No cap, that concert was fire 🔥"
+    "negative",  # "I absolutely love getting stuck in traffic" (sarcasm)
+    "negative",  # "ugh monday again 😩"
+    "positive",  # "Got the job!!! can't stop smiling 🥹"
+    "mixed",     # "Excited for the trip but nervous about flying"
+    "neutral",   # "Going to the store later"
+    "positive",  # "That movie was sick" (slang)
+    "neutral",   # "I'm fine 🙂" (edge case, could be read as negative)
+    # --- Part 4 additions ---
+    "positive",  # "What a great day, nothing could bring me down"
+    "negative",  # "This homework is so boring, I can't focus"
+    "positive",  # "Honestly not bad at all" (negation)
+    "negative",  # "Waiting in line for an hour, love that for me 🙄" (sarcasm)
+    "mixed",     # "Kinda sad it's over but so grateful for the memories"
 ]
 
-# TODO: Add 5-10 more posts and labels.
-#
-# Requirements:
-#   - For every new post you add to SAMPLE_POSTS, you must add one
-#     matching label to TRUE_LABELS.
-#   - SAMPLE_POSTS and TRUE_LABELS must always have the same length.
-#   - Include a variety of language styles, such as:
-#       * Slang ("lowkey", "highkey", "no cap")
-#       * Emojis (":)", ":(", "🥲", "😂", "💀")
-#       * Sarcasm ("I absolutely love getting stuck in traffic")
-#       * Ambiguous or mixed feelings
-#
-# Tips:
-#   - Try to create some examples that are hard to label even for you.
-#   - Make a note of any examples that you and a friend might disagree on.
-#     Those "edge cases" are interesting to inspect for both the rule based
-#     and ML models.
-#
-# Example of how you might extend the lists:
-#
-# SAMPLE_POSTS.append("Lowkey stressed but kind of proud of myself")
-# TRUE_LABELS.append("mixed")
-#
-# Remember to keep them aligned:
-#   len(SAMPLE_POSTS) == len(TRUE_LABELS)
+# Safety check: crash early with a clear message if the lists drift apart.
+assert len(SAMPLE_POSTS) == len(TRUE_LABELS), (
+    f"SAMPLE_POSTS has {len(SAMPLE_POSTS)} items but "
+    f"TRUE_LABELS has {len(TRUE_LABELS)}"
+)
